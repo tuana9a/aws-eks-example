@@ -1,5 +1,3 @@
 # aws-eks-example/zero
 
-```bash
-aws eks update-kubeconfig --name zero
-```
+Simple EKS cluster with public worker node.
