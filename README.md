@@ -1,8 +1,10 @@
 # aws-eks-example
 
-See [zero](zero/README.md)
+[zero](zero/) - EKS public worker node
 
-## find eks addon version
+[one](one/) - EKS private worker node
+
+# find eks addon version
 
 ```shell
 # find version of single addon
