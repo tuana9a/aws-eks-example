@@ -5,8 +5,8 @@ resource "aws_eks_cluster" "one" {
 
   vpc_config {
     subnet_ids = [
-      aws_subnet.one_one.id,
       aws_subnet.one_two.id,
+      aws_subnet.one_three.id,
     ]
   }
 
@@ -24,8 +24,8 @@ resource "aws_eks_node_group" "one" {
   node_group_name = "one"
   node_role_arn   = aws_iam_role.eks_node_role.arn
   subnet_ids = [
+    aws_subnet.one_two.id,
     aws_subnet.one_three.id,
-    aws_subnet.one_four.id,
   ]
   capacity_type = "SPOT"
 
