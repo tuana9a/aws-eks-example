@@ -1,6 +1,6 @@
-# aws-eks-example/zero
+# eks:zero
 
-Simple EKS cluster with public worker node.
+Simple EKS cluster with public control plane and public workers.
 
 # how-to
 

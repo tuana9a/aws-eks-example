@@ -1,6 +1,6 @@
-# aws-eks-example/one
+# eks:one
 
-Simple EKS cluster with private worker node and public control plane and load balancer.
+Simple EKS cluster with public control planes and private workers.
 
 ```bash
 aws eks update-kubeconfig --name one
