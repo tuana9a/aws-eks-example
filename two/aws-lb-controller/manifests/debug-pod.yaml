@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug
+  namespace: aws-lb-controller
+spec:
+  serviceAccountName: aws-lb-controller
+  containers:
+    - name: debug
+      image: amazon/aws-cli # Replace with your actual image
+      command: ["sleep", "8h"]
