@@ -71,6 +71,7 @@ resource "aws_subnet" "two4" {
   }
 }
 
+# ----- PUBLIC -----
 # internet gateway for public internet facing
 resource "aws_internet_gateway" "public" {
   vpc_id = aws_vpc.two.id
@@ -103,6 +104,7 @@ resource "aws_route_table_association" "two2" {
   subnet_id      = aws_subnet.two2.id
 }
 
+# ----- NAT -----
 resource "aws_eip" "nat" {
   domain = "vpc"
   tags = {

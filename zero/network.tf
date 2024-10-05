@@ -38,12 +38,12 @@ resource "aws_subnet" "zero_three" {
   }
 }
 
-resource "aws_internet_gateway" "zero" {
+resource "aws_internet_gateway" "public" {
   vpc_id = aws_vpc.zero.id
 }
 
 resource "aws_route" "public" {
   route_table_id         = aws_vpc.zero.default_route_table_id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.zero.id
+  gateway_id             = aws_internet_gateway.public.id
 }
