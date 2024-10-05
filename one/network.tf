@@ -102,13 +102,11 @@ resource "aws_route" "nat" {
   nat_gateway_id         = aws_nat_gateway.nat.id
 }
 
-# associate "nat" route table to subnet two
 resource "aws_route_table_association" "one_two" {
   route_table_id = aws_route_table.nat.id
   subnet_id      = aws_subnet.one_two.id
 }
 
-# associate "nat" route table to subnet two
 resource "aws_route_table_association" "one_three" {
   route_table_id = aws_route_table.nat.id
   subnet_id      = aws_subnet.one_three.id
