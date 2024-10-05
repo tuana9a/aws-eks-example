@@ -38,28 +38,12 @@ resource "aws_subnet" "one_three" {
   }
 }
 
+# ----- PUBLIC -----
 # internet gateway for public internet facing
-resource "aws_internet_gateway" "one" {
+resource "aws_internet_gateway" "public" {
   vpc_id = aws_vpc.one.id
   tags = {
-    Name = "one"
-  }
-}
-
-resource "aws_eip" "one" {
-  domain = "vpc"
-  tags = {
-    Name = "one"
-  }
-}
-
-# nat gate way live under subnet one - which is a public internet facing subnet
-resource "aws_nat_gateway" "one" {
-  allocation_id = aws_eip.one.allocation_id
-  subnet_id     = aws_subnet.one_one.id
-
-  tags = {
-    Name = "one"
+    Name = "public"
   }
 }
 
@@ -74,13 +58,31 @@ resource "aws_route_table" "public" {
 resource "aws_route" "public" {
   route_table_id         = aws_route_table.public.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.one.id
+  gateway_id             = aws_internet_gateway.public.id
 }
 
 # associate the "public" route table to public subnet "one", making subnet "one" is the public internet facing subnet
-resource "aws_route_table_association" "public_one_one" {
+resource "aws_route_table_association" "one_one" {
   route_table_id = aws_route_table.public.id
   subnet_id      = aws_subnet.one_one.id
+}
+
+# ----- NAT -----
+resource "aws_eip" "nat" {
+  domain = "vpc"
+  tags = {
+    Name = "nat"
+  }
+}
+
+# nat gate way live under subnet one - which is a public internet facing subnet
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.nat.allocation_id
+  subnet_id     = aws_subnet.one_one.id
+
+  tags = {
+    Name = "nat"
+  }
 }
 
 resource "aws_route_table" "nat" {
@@ -97,17 +99,17 @@ resource "aws_route_table" "nat" {
 resource "aws_route" "nat" {
   route_table_id         = aws_route_table.nat.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.one.id
+  nat_gateway_id         = aws_nat_gateway.nat.id
 }
 
 # associate "nat" route table to subnet two
-resource "aws_route_table_association" "nat_one_two" {
+resource "aws_route_table_association" "one_two" {
   route_table_id = aws_route_table.nat.id
   subnet_id      = aws_subnet.one_two.id
 }
 
 # associate "nat" route table to subnet two
-resource "aws_route_table_association" "nat_one_three" {
+resource "aws_route_table_association" "one_three" {
   route_table_id = aws_route_table.nat.id
   subnet_id      = aws_subnet.one_three.id
 }
