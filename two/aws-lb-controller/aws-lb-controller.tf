@@ -25,4 +25,9 @@ resource "helm_release" "aws_lb_controller" {
     name  = "serviceAccount.name"
     value = kubernetes_service_account.aws_lb_controller.metadata[0].name
   }
+  # CHALLENGE 3: YOU FOUND IT
+  # set {
+  #   name  = "enableServiceMutatorWebhook"
+  #   value = "false"
+  # }
 }
