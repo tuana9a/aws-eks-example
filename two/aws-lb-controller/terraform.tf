@@ -12,10 +12,6 @@ terraform {
       source  = "hashicorp/helm"
       version = "2.15.0"
     }
-    external = {
-      source  = "hashicorp/external"
-      version = "2.3.4"
-    }
   }
   required_version = ">= 1.2.0"
 }
@@ -38,7 +34,4 @@ provider "helm" {
     cluster_ca_certificate = base64decode(data.aws_eks_cluster.two.certificate_authority[0].data)
     token                  = data.aws_eks_cluster_auth.two.token
   }
-}
-
-provider "external" {
 }

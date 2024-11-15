@@ -6,6 +6,14 @@ resource "helm_release" "aws_lb_controller" {
   version    = "1.8.4"
 
   set {
+    name  = "region"
+    value = data.aws_region.current.name
+  }
+  set {
+    name  = "vpcId"
+    value = data.aws_vpc.two.id
+  }
+  set {
     name  = "clusterName"
     value = data.aws_eks_cluster.two.name
   }
@@ -16,13 +24,5 @@ resource "helm_release" "aws_lb_controller" {
   set {
     name  = "serviceAccount.name"
     value = kubernetes_service_account.aws_lb_controller.metadata[0].name
-  }
-  set {
-    name  = "region"
-    value = data.aws_region.current.name
-  }
-  set {
-    name  = "vpcId"
-    value = data.aws_vpc.two.id
   }
 }
