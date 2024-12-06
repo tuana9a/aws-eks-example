@@ -17,4 +17,6 @@ resource "aws_eks_addon" "one_coredns" {
   cluster_name  = aws_eks_cluster.one.name
   addon_name    = "coredns"
   addon_version = "v1.10.1-eksbuild.2"
+
+  depends_on = [aws_eks_node_group.one]
 }

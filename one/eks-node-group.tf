@@ -24,5 +24,7 @@ resource "aws_eks_node_group" "one" {
   # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
   depends_on = [
     aws_iam_role.eks_node_role,
+    aws_eks_addon.one_vpccni,
+    aws_eks_addon.one_kubeproxy,
   ]
 }
