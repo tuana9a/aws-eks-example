@@ -20,3 +20,9 @@ At this point it would be succeed and we can pull the kubeconfig as
 ```bash
 aws eks update-kubeconfig --name zero
 ```
+
+# changelog
+
+file `iam.tf` was splitted into 2 files: `eks-cluster-iam.tf` and `eks-node-iam.tf`
+
+file `main.tf` was splitted into 2 files: `eks-cluster.tf` and `eks-node-group.tf`
