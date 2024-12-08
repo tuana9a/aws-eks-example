@@ -3,6 +3,7 @@
 resource "aws_eks_node_group" "one" {
   cluster_name    = aws_eks_cluster.one.name
   node_group_name = "one"
+  version         = "1.29"
   node_role_arn   = aws_iam_role.eks_node_role.arn
   subnet_ids = [
     aws_subnet.one_two.id,
