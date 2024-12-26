@@ -5,11 +5,16 @@ resource "aws_eks_node_group" "one" {
   node_group_name = "one"
   version         = "1.29"
   node_role_arn   = aws_iam_role.eks_node_role.arn
-  subnet_ids = [
-    aws_subnet.one_two.id,
-    aws_subnet.one_three.id,
+  capacity_type   = "SPOT"
+
+  instance_types = [
+    "t3.medium"
   ]
-  capacity_type = "SPOT"
+
+  subnet_ids = [
+    aws_subnet.one_private_a.id,
+    aws_subnet.one_private_b.id,
+  ]
 
   scaling_config {
     desired_size = 1

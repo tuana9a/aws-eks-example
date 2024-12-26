@@ -7,39 +7,55 @@ resource "aws_vpc" "one" {
   }
 }
 
-resource "aws_subnet" "one_one" {
-  vpc_id                  = aws_vpc.one.id
-  cidr_block              = "10.0.1.0/24"
-  availability_zone       = "ap-southeast-1a"
+resource "aws_subnet" "one_public_a" {
+  vpc_id            = aws_vpc.one.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "ap-southeast-1a"
+
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "one_one"
+    Name = "one_public_a"
   }
 }
 
-resource "aws_subnet" "one_two" {
+resource "aws_subnet" "one_private_a" {
   vpc_id            = aws_vpc.one.id
   cidr_block        = "10.0.2.0/24"
-  availability_zone = "ap-southeast-1b"
+  availability_zone = "ap-southeast-1a"
+
+  map_public_ip_on_launch = false
 
   tags = {
-    Name = "one_two"
+    Name = "one_private_a"
   }
 }
 
-resource "aws_subnet" "one_three" {
+resource "aws_subnet" "one_public_b" {
   vpc_id            = aws_vpc.one.id
   cidr_block        = "10.0.3.0/24"
-  availability_zone = "ap-southeast-1c"
+  availability_zone = "ap-southeast-1b"
+
+  map_public_ip_on_launch = true
 
   tags = {
-    Name = "one_three"
+    Name = "one_public_b"
+  }
+}
+
+resource "aws_subnet" "one_private_b" {
+  vpc_id            = aws_vpc.one.id
+  cidr_block        = "10.0.4.0/24"
+  availability_zone = "ap-southeast-1b"
+
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "one_private_b"
   }
 }
 
 # ----- PUBLIC -----
-# internet gateway for public internet facing
 resource "aws_internet_gateway" "public" {
   vpc_id = aws_vpc.one.id
   tags = {
@@ -54,60 +70,87 @@ resource "aws_route_table" "public" {
   }
 }
 
-# by default all traffic will go to internet gateway and travel to public internet
 resource "aws_route" "public" {
   route_table_id         = aws_route_table.public.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.public.id
 }
 
-# associate the "public" route table to public subnet "one", making subnet "one" is the public internet facing subnet
-resource "aws_route_table_association" "one_one" {
+resource "aws_route_table_association" "one_public_a" {
   route_table_id = aws_route_table.public.id
-  subnet_id      = aws_subnet.one_one.id
+  subnet_id      = aws_subnet.one_public_a.id
+}
+
+resource "aws_route_table_association" "one_public_b" {
+  route_table_id = aws_route_table.public.id
+  subnet_id      = aws_subnet.one_public_b.id
 }
 
 # ----- NAT -----
-resource "aws_eip" "nat" {
+resource "aws_eip" "nat_a" {
   domain = "vpc"
   tags = {
-    Name = "nat"
+    Name = "nat_a"
   }
 }
 
-# nat gate way live under subnet one - which is a public internet facing subnet
-resource "aws_nat_gateway" "nat" {
-  allocation_id = aws_eip.nat.allocation_id
-  subnet_id     = aws_subnet.one_one.id
+resource "aws_eip" "nat_b" {
+  domain = "vpc"
+  tags = {
+    Name = "nat_b"
+  }
+}
+
+resource "aws_nat_gateway" "nat_a" {
+  allocation_id = aws_eip.nat_a.allocation_id
+  subnet_id     = aws_subnet.one_public_a.id
 
   tags = {
-    Name = "nat"
+    Name = "nat_a"
   }
 }
 
-resource "aws_route_table" "nat" {
+resource "aws_nat_gateway" "nat_b" {
+  allocation_id = aws_eip.nat_b.allocation_id
+  subnet_id     = aws_subnet.one_public_b.id
+
+  tags = {
+    Name = "nat_b"
+  }
+}
+
+resource "aws_route_table" "nat_a" {
   vpc_id = aws_vpc.one.id
   tags = {
-    Name = "nat"
+    Name = "nat_a"
   }
 }
 
-# by default traffic will go the nat gateway
-# and nat gateway lives under subnet one
-# and subnet one has default route to internet gateway
-# which will enable ec2 vm in private subnets access public internet
-resource "aws_route" "nat" {
-  route_table_id         = aws_route_table.nat.id
+resource "aws_route_table" "nat_b" {
+  vpc_id = aws_vpc.one.id
+  tags = {
+    Name = "nat_b"
+  }
+}
+
+resource "aws_route" "nat_a" {
+  route_table_id         = aws_route_table.nat_a.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.nat.id
+  nat_gateway_id         = aws_nat_gateway.nat_a.id
 }
 
-resource "aws_route_table_association" "one_two" {
-  route_table_id = aws_route_table.nat.id
-  subnet_id      = aws_subnet.one_two.id
+resource "aws_route" "nat_b" {
+  route_table_id         = aws_route_table.nat_b.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.nat_b.id
 }
 
-resource "aws_route_table_association" "one_three" {
-  route_table_id = aws_route_table.nat.id
-  subnet_id      = aws_subnet.one_three.id
+resource "aws_route_table_association" "one_private_a" {
+  route_table_id = aws_route_table.nat_a.id
+  subnet_id      = aws_subnet.one_private_a.id
+}
+
+resource "aws_route_table_association" "one_private_b" {
+  route_table_id = aws_route_table.nat_b.id
+  subnet_id      = aws_subnet.one_private_b.id
 }
