@@ -16,6 +16,10 @@ resource "aws_subnet" "one_public_a" {
 
   tags = {
     Name = "one_public_a"
+
+    # https://github.com/kubernetes-sigs/aws-load-balancer-controller/issues/3212
+    # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.5/deploy/subnet_discovery/
+    "kubernetes.io/role/elb" = "1"
   }
 }
 
@@ -28,6 +32,10 @@ resource "aws_subnet" "one_private_a" {
 
   tags = {
     Name = "one_private_a"
+
+    # https://github.com/kubernetes-sigs/aws-load-balancer-controller/issues/3212
+    # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.5/deploy/subnet_discovery/
+    "kubernetes.io/role/internal-elb" = "1"
   }
 }
 
@@ -40,6 +48,10 @@ resource "aws_subnet" "one_public_b" {
 
   tags = {
     Name = "one_public_b"
+
+    # https://github.com/kubernetes-sigs/aws-load-balancer-controller/issues/3212
+    # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.5/deploy/subnet_discovery/
+    "kubernetes.io/role/elb" = "1"
   }
 }
 
@@ -52,6 +64,10 @@ resource "aws_subnet" "one_private_b" {
 
   tags = {
     Name = "one_private_b"
+
+    # https://github.com/kubernetes-sigs/aws-load-balancer-controller/issues/3212
+    # https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.5/deploy/subnet_discovery/
+    "kubernetes.io/role/internal-elb" = "1"
   }
 }
 

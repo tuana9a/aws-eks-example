@@ -8,8 +8,8 @@ data "external" "eks_thumbprint" {
   program = ["bash", "./scripts/get_eks_thumbprint.sh", data.aws_region.current.name]
 }
 
-resource "aws_iam_openid_connect_provider" "eks_two" {
-  url = data.aws_eks_cluster.two.identity[0].oidc[0].issuer
+resource "aws_iam_openid_connect_provider" "eks_one" {
+  url = data.aws_eks_cluster.one.identity[0].oidc[0].issuer
   client_id_list = [
     "sts.amazonaws.com",
   ]

@@ -5,8 +5,6 @@ We have those examples for EKS setup from scratch
 ## [zero](zero/README.md) - EKS public control plane, public worker node
 
 ## [one](one/README.md) - EKS public control plane, private worker node
-
-## [two](two/README.md) - EKS public control plane, private worker node but with
   - oidc provider
   - aws lb controller
   - cluster autoscaling
@@ -36,3 +34,7 @@ for addon_name in coredns kube-proxy vpc-cni aws-ebs-csi-driver; do
     echo;
 done
 ```
+
+# available annotations for k8s service to work with aws lb controller
+
+https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.8/guide/service/annotations/

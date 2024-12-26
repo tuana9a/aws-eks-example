@@ -11,11 +11,11 @@ resource "helm_release" "aws_lb_controller" {
   }
   set {
     name  = "vpcId"
-    value = data.aws_vpc.two.id
+    value = data.aws_vpc.one.id
   }
   set {
     name  = "clusterName"
-    value = data.aws_eks_cluster.two.name
+    value = data.aws_eks_cluster.one.name
   }
   set {
     name  = "serviceAccount.create"
