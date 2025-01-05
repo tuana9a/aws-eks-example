@@ -5,9 +5,9 @@ resource "aws_eks_node_group" "zero" {
   node_group_name = "zero"
   node_role_arn   = aws_iam_role.eks_node_role.arn
   subnet_ids = [
-    aws_subnet.zero_one.id,
-    aws_subnet.zero_two.id,
-    aws_subnet.zero_three.id,
+    aws_subnet.zero1.id,
+    aws_subnet.zero2.id,
+    aws_subnet.zero3.id,
   ]
   capacity_type = "SPOT"
 

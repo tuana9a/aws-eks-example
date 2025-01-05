@@ -5,36 +5,36 @@ resource "aws_vpc" "zero" {
   }
 }
 
-resource "aws_subnet" "zero_one" {
+resource "aws_subnet" "zero1" {
   vpc_id                  = aws_vpc.zero.id
   cidr_block              = "10.0.1.0/24"
   availability_zone       = "ap-southeast-1a"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "zero_one"
+    Name = "zero1"
   }
 }
 
-resource "aws_subnet" "zero_two" {
+resource "aws_subnet" "zero2" {
   vpc_id                  = aws_vpc.zero.id
   cidr_block              = "10.0.2.0/24"
   availability_zone       = "ap-southeast-1b"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "zero_two"
+    Name = "zero2"
   }
 }
 
-resource "aws_subnet" "zero_three" {
+resource "aws_subnet" "zero3" {
   vpc_id                  = aws_vpc.zero.id
   cidr_block              = "10.0.3.0/24"
   availability_zone       = "ap-southeast-1c"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "zero_three"
+    Name = "zero3"
   }
 }
 

@@ -5,9 +5,9 @@ resource "aws_eks_cluster" "zero" {
 
   vpc_config {
     subnet_ids = [
-      aws_subnet.zero_one.id,
-      aws_subnet.zero_two.id,
-      aws_subnet.zero_three.id,
+      aws_subnet.zero1.id,
+      aws_subnet.zero2.id,
+      aws_subnet.zero3.id,
     ]
   }
 
