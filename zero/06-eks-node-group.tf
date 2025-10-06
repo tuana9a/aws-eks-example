@@ -2,8 +2,11 @@
 # WARN: apply BEFORE coredns
 resource "aws_eks_node_group" "zero" {
   cluster_name    = aws_eks_cluster.zero.name
+  version         = "1.33" # UPDATED 2025
   node_group_name = "zero"
   node_role_arn   = aws_iam_role.eks_node_role.arn
+  instance_types  = ["t3.medium"]
+
   subnet_ids = [
     aws_subnet.zero1.id,
     aws_subnet.zero2.id,
