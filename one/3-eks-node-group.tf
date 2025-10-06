@@ -1,9 +1,31 @@
+resource "aws_iam_role" "eks_node_role" {
+  name = "EKSNodeRole"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
+  })
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+    "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  ]
+}
+
 # WARN: apply AFTER vpc-cni, kube-proxy
 # WARN: apply BEFORE coredns
 resource "aws_eks_node_group" "one" {
   cluster_name    = aws_eks_cluster.one.name
   node_group_name = "one"
-  version         = "1.29"
+  version         = "1.33" # UPDATED 2025
   node_role_arn   = aws_iam_role.eks_node_role.arn
   capacity_type   = "SPOT"
 
