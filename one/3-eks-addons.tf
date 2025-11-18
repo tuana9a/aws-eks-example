@@ -3,6 +3,8 @@ resource "aws_eks_addon" "one_vpccni" {
   cluster_name  = aws_eks_cluster.one.name
   addon_name    = "vpc-cni"
   addon_version = "v1.19.5-eksbuild.1" # UPDATED 2025
+
+  resolve_conflicts_on_create = "OVERWRITE"
 }
 
 # WARN: apply BEFORE node_group
